@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Demo</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="Demo project">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+        <style type="text/css">
+            html, body, #frame{
+                height:100%;
+                width:100%;
+                margin:0;
+                padding:0;
+                border:0;
+                display:block;
+                cursor:not-allowed;
+            }
+        </style>
+    </head>
+    <body>
+        <iframe id="frame"></iframe>
+    </body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        (function(){
+            var socket = new io();
+            socket.on('connect', function(){
+                socket.emit('Viewer');
+            }); 
+
+            socket.on('clients', function(data){
+                console.log(data);
+                
+            });
+            socket.emit('ViewClient', 0);
+
+            socket.on('data', function(data){
+                if(data.html){
+                    var iframe = document.getElementById('frame'),
+                    iframedoc = iframe.contentDocument || iframe.contentWindow.document;
+                    iframedoc.body.innerHTML = data.html;
+                }
+                //document.getElementById('frame').contentWindow.document.removeChild(document.getElementById('frame').contentWindow.document.getElementsByTagName('html')[0]);
+                //document.getElementById('frame').contentWindow.document.write(data.html);
+                if(data.values){
+                    var inputs = document.getElementById('frame').contentWindow.document.getElementsByTagName('input');
+                    for(var c = 0; c<inputs.length; c++){
+                        inputs[c].value = data.values[c];
+                    }
+                }
+                
+            });
+        })();
+    </script>
+</html>
