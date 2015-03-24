@@ -41,7 +41,7 @@
 
 	function connect(){
 		if(window.io){
-			socket = new io('ws://localhost');
+			socket = new io('ws://cobrowse-aaron.herokuapp.com');
 			socket.on('connect', function(){
 				socket.emit('sessionID', getCookie('CoBrowseId'));
 				addSocketListeners();
