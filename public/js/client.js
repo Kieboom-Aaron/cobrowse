@@ -48,7 +48,7 @@
 			});
 		}else{
 			var socketio = document.createElement('script');
-			socketio.src='http://localhost/socket.io/socket.io.js';
+			socketio.src='http://cobrowse-aaron.herokuapp.com/socket.io/socket.io.js';
 			document.body.appendChild(socketio);
 			socketio.onload = function(){
 				connect();
